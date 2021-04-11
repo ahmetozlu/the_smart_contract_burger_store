@@ -1,3 +1,24 @@
+// medium'da post geliştirmeye başla
+// youtube videosu için içerik tasarımı düşün ve geliştir
+// kod sadelestirilecek: gereksiz satırlar çıkarılacak, comment'ler yeniden yazılacak
+// order a delivery date attribute eklenmesi lazım
+
+/*
+gitignore:
+
+# production
+/build
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+*/
+
 pragma solidity ^0.5.0;
 
 contract Burger {
@@ -148,6 +169,10 @@ contract Burger {
 
 		/// Create then Invoice instance and store it
 		invoices[invoiceseq] = Invoice(orderno, invoiceseq, true);
+
+		/// Update the shipment data
+		//orders[orderno].shipment.date    = delivery_date;
+		//orders[orderno].shipment.courier = courier;
 
 		/// Trigger the event
 		emit InvoiceSent(buyerAddr, invoiceseq, orderno, delivery_date);

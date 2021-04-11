@@ -3,15 +3,11 @@ var Burger = artifacts.require('Burger');
 contract('Burger', function(accounts) {
 
 	const ORDER_PRICE            = 3;
-	const ORDER_SAFEPAY          = 4;
-	const ORDER_SHIPMENT_PRICE   = 5;
-	const ORDER_SHIPMENT_SAFEPAY = 6;
+	const ORDER_SAFEPAY          = 4;	
 
-	const INVOICE_ORDERNO = 1;
-	const INVOICE_COURIER = 3;
+	const INVOICE_ORDERNO = 1;	
 
 	const TYPE_ORDER    = 1;
-	const TYPE_SHIPMENT = 2;
 
 	var seller         = null;
 	var buyer          = null;	
@@ -35,12 +31,12 @@ contract('Burger', function(accounts) {
 
 	it("The burger store account should own the contract.", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.owner();
+			return burger.owner();
 		}).then(function(owner){
 			assert.equal(seller, owner, "The burger store account does not own the contract.");
 		});
@@ -49,12 +45,12 @@ contract('Burger', function(accounts) {
 
 	it("should the second account was the buyer", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.buyerAddr();
+			return burger.buyerAddr();
 		}).then(function(buyer){
 			assert.equal(accounts[1], buyer, "The second account was not the buyer");
 		});
@@ -65,12 +61,12 @@ contract('Burger', function(accounts) {
 
 	it("should first order was number 1", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(transaction){
 			return new Promise(function(resolve, reject){
 				return web3.eth.getTransaction(transaction.tx, function(err, tx){
@@ -85,7 +81,7 @@ contract('Burger', function(accounts) {
 		}).then(function(){
 			//query getTransactionReceipt
 		}).then(function(){
-			return burgerStore.queryOrder(orderno);
+			return burger.queryOrder(orderno);
 		}).then(function(order){
 			assert.notEqual(order, null, "The order number 1 did not exists"); 
 		});
@@ -94,16 +90,16 @@ contract('Burger', function(accounts) {
 
 	it("should the order's price was set", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, order_price, {from: seller});
+			return burger.sendPrice(orderno, order_price, {from: seller});
 		}).then(function(){
-			return burgerStore.queryOrder(orderno);
+			return burger.queryOrder(orderno);
 		}).then(function(order){
 			assert.equal(order[ORDER_PRICE].toString(), order_price);
 		});
@@ -112,18 +108,18 @@ contract('Burger', function(accounts) {
 
 	it("should the safe pay was correct", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, order_price, {from: seller});
+			return burger.sendPrice(orderno, order_price, {from: seller});
 		}).then(function(){
-			return burgerStore.sendSafepay(orderno, {from: buyer, value: order_price});
+			return burger.sendSafepay(orderno, {from: buyer, value: order_price});
 		}).then(function(){
-			return burgerStore.queryOrder(orderno);
+			return burger.queryOrder(orderno);
 		}).then(function(order){
 			assert.equal(order[ORDER_SAFEPAY].toString(), price);
 		});
@@ -131,19 +127,19 @@ contract('Burger', function(accounts) {
 
 	it("should the contract's balance was correct after the safepay", function() {
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, order_price, {from: seller});
+			return burger.sendPrice(orderno, order_price, {from: seller});
 		}).then(function(){
-			return burgerStore.sendSafepay(orderno, {from: buyer, value: price});
+			return burger.sendSafepay(orderno, {from: buyer, value: price});
 		}).then(function(){
 			return new Promise(function(resolve, reject) {
-				return web3.eth.getBalance(burgerStore.address, function(err, hash){
+				return web3.eth.getBalance(burger.address, function(err, hash){
 					if(err){
 						reject(err);
 					}
@@ -157,18 +153,18 @@ contract('Burger', function(accounts) {
 
 	it("should the first invoice was number 1", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, price, {from: seller});
+			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burgerStore.sendInvoice(orderno, 0, {from: seller});
+			return burger.sendInvoice(orderno, 0, {from: seller});
 		}).then(function(){
-			return burgerStore.getInvoice(invoiceno);
+			return burger.getInvoice(invoiceno);
 		}).then(function(invoice){
 			assert.notEqual(invoice, null);
 		});
@@ -176,18 +172,18 @@ contract('Burger', function(accounts) {
 
 	it("should the invoice 1 it is for order 1", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, price, {from: seller});
+			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burgerStore.sendInvoice(orderno, 0, {from: seller});
+			return burger.sendInvoice(orderno, 0, {from: seller});
 		}).then(function(){
-			return burgerStore.getInvoice(invoiceno);
+			return burger.getInvoice(invoiceno);
 		}).then(function(invoice){
 			assert.equal(invoice[INVOICE_ORDERNO].toString(), orderno);
 		});
@@ -195,23 +191,23 @@ contract('Burger', function(accounts) {
 
 	it("should the contract's balance was correct after the delivery", function(){
 
-		var burgerStore;
+		var burger;
 
 		return Burger.new(buyer, {from: seller}).then(function(instance){
-			burgerStore = instance;
+			burger = instance;
 
-			return burgerStore.sendOrder(goods, quantity, {from: buyer});
+			return burger.sendOrder(goods, quantity, {from: buyer});
 		}).then(function(){
-			return burgerStore.sendPrice(orderno, order_price, {from: seller});
+			return burger.sendPrice(orderno, order_price, {from: seller});
 		}).then(function(){
-			return burgerStore.sendSafepay(orderno, {from: buyer, value: price});
+			return burger.sendSafepay(orderno, {from: buyer, value: price});
 		}).then(function(){
-			return burgerStore.sendInvoice(orderno, 0, {from: seller});
+			return burger.sendInvoice(orderno, 0, {from: seller});
 		}).then(function(){
-			return burgerStore.delivery(invoiceno, 0, {from: buyer});
+			return burger.delivery(invoiceno, 0, {from: buyer});
 		}).then(function(){
 		return new Promise(function(resolve, reject){
-			return web3.eth.getBalance(burgerStore.address, function(err, hash){
+			return web3.eth.getBalance(burger.address, function(err, hash){
 				if(err){
 					reject(err);
 				}

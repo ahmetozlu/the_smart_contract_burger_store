@@ -3,22 +3,6 @@
 // kod sadelestirilecek: gereksiz satırlar çıkarılacak, comment'ler yeniden yazılacak
 // order a delivery date attribute eklenmesi lazım
 
-/*
-gitignore:
-
-# production
-/build
-
-# misc
-.DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-*/
-
 pragma solidity ^0.5.0;
 
 contract Burger {

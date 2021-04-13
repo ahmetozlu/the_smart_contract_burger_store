@@ -34,7 +34,8 @@ contract Burger {
 	/// The Invoice struct
 	struct Invoice {
 		uint orderno;
-		uint number;	
+		uint number;
+		uint delivery_date;
 
 		bool init;
 	}
@@ -152,7 +153,7 @@ contract Burger {
 		invoiceseq++;
 
 		/// Create then Invoice instance and store it
-		invoices[invoiceseq] = Invoice(orderno, invoiceseq, true);
+		invoices[invoiceseq] = Invoice(orderno, invoiceseq, delivery_date, true);
 
 		/// Update the shipment data
 		//orders[orderno].shipment.date    = delivery_date;

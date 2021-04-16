@@ -9,11 +9,11 @@ contract Burger {
 	// The burger store's address
  	address payable public owner;
 
-	/// The buyer's address part on this contract
-	address public buyerAddr;
+	/// The customer's address part on this contract
+	address public customerAddr;
 
-	// The Buyer struct
-	struct Buyer {				
+	// The Customer struct
+	struct Customer {				
 		address addr;
 		string name;		
 
@@ -53,26 +53,26 @@ contract Burger {
 	uint invoiceseq;
 
 	// Event triggered for every new order
-	event OrderSent(address buyer, string goods, uint quantity, uint orderno);
+	event OrderSent(address customer, string goods, uint quantity, uint orderno);
 
 	// Event triggerd when the order gets valued and wants to know the value of the payment
-	event PriceSent(address buyer, uint orderno, uint price);
+	event PriceSent(address customer, uint orderno, uint price);
 
-	/// Event trigger when the buyer performs the safepay
-	event SafepaySent(address buyer, uint orderno, uint value, uint now);
+	/// Event trigger when the customer performs the safepay
+	event SafepaySent(address customer, uint orderno, uint value, uint now);
 
 	/// Event triggered when the seller sends the invoice
-	event InvoiceSent(address buyer, uint invoiceno, uint orderno, uint delivery_date);
+	event InvoiceSent(address customer, uint invoiceno, uint orderno, uint delivery_date);
 
 	/// Event triggered when the courie delives the order
-	event OrderDelivered(address buyer, uint invoiceno, uint orderno, uint real_delivey_date);
+	event OrderDelivered(address customer, uint invoiceno, uint orderno, uint real_delivey_date);
 
 	// The smart contract's constructor
 	constructor(address _buyerAddr) public payable {
 		/// The seller is the contract's owner
 		owner = msg.sender;
 
-		buyerAddr = _buyerAddr;
+		customerAddr = _buyerAddr;
 	}
 
 
@@ -81,8 +81,8 @@ contract Burger {
 	//   Payable functions returns just the transaction object, with no custom field.
 	//   To get field values listen to OrderSent event.
 	function sendOrder(string memory goods, uint quantity) payable public {
-		/// Accept orders just from buyer
-		require(msg.sender == buyerAddr);
+		/// Accept orders just from customer
+		require(msg.sender == customerAddr);
 
 		/// Increment the order sequence
 		orderseq++;
@@ -96,12 +96,12 @@ contract Burger {
 
 	// The function to query orders by number
 	// Constant functions returns custom fields
-	function queryOrder(uint number) view public returns (address buyer, string memory goods, uint quantity, uint price, uint safepay) {
+	function queryOrder(uint number) view public returns (address customer, string memory goods, uint quantity, uint price, uint safepay) {
 		// Validate the order number
 		require(orders[number].init);
 
 		// Return the order data
-		return(buyerAddr, orders[number].goods, orders[number].quantity, orders[number].price, orders[number].safepay);
+		return(customerAddr, orders[number].goods, orders[number].quantity, orders[number].price, orders[number].safepay);
 	}
 
 	// The function to send the price to pay for order
@@ -118,7 +118,7 @@ contract Burger {
 		orders[orderno].price = price;
 
 		// Trigger the event
-		emit PriceSent(buyerAddr, orderno, price);
+		emit PriceSent(customerAddr, orderno, price);
 	}
 
 	/// The function to send the value of order's price
@@ -129,8 +129,8 @@ contract Burger {
 		/// Validate the order number
 		require(orders[orderno].init);
 
-		/// Just the buyer can make safepay
-		require(buyerAddr == msg.sender);
+		/// Just the customer can make safepay
+		require(customerAddr == msg.sender);
 
 		/// The order's value plus the shipment value must equal to msg.value
 		//require((orders[orderno].price + orders[orderno].shipment.price) == msg.value);
@@ -160,12 +160,12 @@ contract Burger {
 		//orders[orderno].shipment.courier = courier;
 
 		/// Trigger the event
-		emit InvoiceSent(buyerAddr, invoiceseq, orderno, delivery_date);
+		emit InvoiceSent(customerAddr, invoiceseq, orderno, delivery_date);
 	}
 
 	/// The function to get the sent invoice
 	///  requires no fee
-	function getInvoice(uint invoiceno) view public returns (address buyer, uint orderno/*, uint delivery_date*/){
+	function getInvoice(uint invoiceno) view public returns (address customer, uint orderno/*, uint delivery_date*/){
 
 		/// Validate the invoice number
 		require(invoices[invoiceno].init);
@@ -173,8 +173,8 @@ contract Burger {
 		Invoice storage _invoice = invoices[invoiceno];
 		Order storage _order     = orders[_invoice.orderno];
 		// order a delivery date attribute eklenmesi lazım
-		//return (buyerAddr, _order.number, _order.shipment.date, _order.shipment.courier);
-		return (buyerAddr, _order.number);
+		//return (customerAddr, _order.number, _order.shipment.date, _order.shipment.courier);
+		return (customerAddr, _order.number);
 	}
 
 	/// The function to mark an order as delivered
@@ -189,10 +189,10 @@ contract Burger {
 		/// Just the courier can call this function
 		//require(_order.shipment.courier == msg.sender);
 
-		/// Just the buyer can make safepay
-		require(buyerAddr == msg.sender);
+		/// Just the customer can make safepay
+		require(customerAddr == msg.sender);
 
-		emit OrderDelivered(buyerAddr, invoiceno, _order.number, timestamp);
+		emit OrderDelivered(customerAddr, invoiceno, _order.number, timestamp);
 
 		/// Payout the Order to the seller
 		owner.transfer(_order.safepay);

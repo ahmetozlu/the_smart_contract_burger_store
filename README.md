@@ -1,6 +1,17 @@
 # The Smart Contract Burger Store
 
-This project focuses on a case study which is developing an Ethereum smart contract to manage a burger store. 
+This project focuses on a case study which is developing an Ethereum smart contract to manage a burger store. This case study can be adopted for various cases to use smart contract for real-life businesses.
+
+Basicaly the smart contract, which is developed in this project, provides:
+
+- **The functions for customers:** Order burger menu, safe payment, get invoice and mark order as delivered functions.
+- **The functions for burger store:** Get orders, send price, send invoice and safe payout functions.
+
+This repository presents practices about:
+
+- Setup a blockchain.
+- Develop Ethereum smart contract.
+- Deploy the contract and test it.
 
 ## Theory
 
@@ -34,4 +45,5 @@ Ahmet Özlü
 
 ## License
 This system is available under the MIT license. See the LICENSE file for more info.
+
 

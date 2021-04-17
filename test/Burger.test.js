@@ -1,43 +1,42 @@
-// delivery ve sendInvoice fonksiyonlarını çağırırken date gönder 0 değil.
+var BurgerMenuOrder = artifacts.require('BurgerMenuOrder');
 
-var Burger = artifacts.require('Burger');
-
-contract('Burger', function(accounts) {
+contract('BurgerMenuOrder', function(accounts) {
 
 	const ORDER_PRICE            = 3;
 	const ORDER_SAFEPAY          = 4;	
 
-	const INVOICE_ORDERNO = 1;	
-
-	const TYPE_ORDER    = 1;
+	const INVOICE_ORDERNO = 1;		
 
 	var seller         = null;
 	var customer          = null;	
 	var orderno        = null;
 	var invoiceno      = null;
-	//var order_price    = null;	
+	
 	var price          = null;
-	var goods          = null;
+	var burgerMenu          = null;
 	var quantity       = null;
 	var orderDate      = null;
+	var deliveryDate      = null;
 
 	before(function() {
 		seller         = accounts[0];
 		customer          = accounts[1];		
 		orderno        = 1;
-		invoiceno      = 1;
-		//order_price    = 100000;		
+		invoiceno      = 1;		
 		price          = 100000;
-		goods          = "BigMac";
+		burgerMenu          = "BigMac";
 		quantity       = 200;
-		deliveryDate      = (new Date()).getTime();
+		orderDate      = (new Date()).getTime(); // for date time practices: https://github.com/pipermerriam/ethereum-datetime
+		deliveryDate      = (new Date()).getTime() + 30000;
+		console.log(new Date().toString());
+		console.log((new Date()).getTime().toString());
 	});
 
 	it("The burger store account should own the contract.", function(){
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
 			return burger.owner();
@@ -51,10 +50,10 @@ contract('Burger', function(accounts) {
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.customerAddr();
+			return burger.customerAddress();
 		}).then(function(customer){
 			assert.equal(accounts[1], customer, "The second account was not the customer");
 		});
@@ -63,14 +62,14 @@ contract('Burger', function(accounts) {
 
 
 
-	it("should first order was number 1", function(){
+	it("should first order was ID 1", function(){
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(transaction){
 			return new Promise(function(resolve, reject){
 				return web3.eth.getTransaction(transaction.tx, function(err, tx){
@@ -85,9 +84,9 @@ contract('Burger', function(accounts) {
 		}).then(function(){
 			//query getTransactionReceipt
 		}).then(function(){
-			return burger.queryOrder(orderno);
+			return burger.checkOrder(orderno);
 		}).then(function(order){
-			assert.notEqual(order, null, "The order number 1 did not exists"); 
+			assert.notEqual(order, null, "The order ID 1 did not exists"); 
 		});
 
 	});
@@ -96,14 +95,14 @@ contract('Burger', function(accounts) {
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.queryOrder(orderno);
+			return burger.checkOrder(orderno);
 		}).then(function(order){
 			assert.equal(order[ORDER_PRICE].toString(), price);
 		});
@@ -114,16 +113,16 @@ contract('Burger', function(accounts) {
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.sendSafepay(orderno, {from: customer, value: price});
+			return burger.sendSafePayment(orderno, {from: customer, value: price});
 		}).then(function(){
-			return burger.queryOrder(orderno);
+			return burger.checkOrder(orderno);
 		}).then(function(order){
 			assert.equal(order[ORDER_SAFEPAY].toString(), price);
 		});
@@ -133,14 +132,14 @@ contract('Burger', function(accounts) {
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.sendSafepay(orderno, {from: customer, value: price});
+			return burger.sendSafePayment(orderno, {from: customer, value: price});
 		}).then(function(){
 			return new Promise(function(resolve, reject) {
 				return web3.eth.getBalance(burger.address, function(err, hash){
@@ -155,18 +154,18 @@ contract('Burger', function(accounts) {
 		});
 	});
 
-	it("should the first invoice was number 1", function(){
+	it("should the first invoice was ID 1", function(){
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.sendInvoice(orderno, deliveryDate, {from: seller});
+			return burger.sendInvoice(orderno, orderDate, {from: seller});
 		}).then(function(){
 			return burger.getInvoice(invoiceno);
 		}).then(function(invoice){
@@ -178,14 +177,14 @@ contract('Burger', function(accounts) {
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.sendInvoice(orderno, 0, {from: seller});
+			return burger.sendInvoice(orderno, orderDate, {from: seller});
 		}).then(function(){
 			return burger.getInvoice(invoiceno);
 		}).then(function(invoice){
@@ -193,22 +192,22 @@ contract('Burger', function(accounts) {
 		});
 	});
 
-	it("should the contract's balance was correct after the delivery", function(){
+	it("should the contract's balance was correct after the markOrderDelivered", function(){
 
 		var burger;
 
-		return Burger.new(customer, {from: seller}).then(function(instance){
+		return BurgerMenuOrder.new(customer, {from: seller}).then(function(instance){
 			burger = instance;
 
-			return burger.sendOrder(goods, quantity, {from: customer});
+			return burger.sendOrder(burgerMenu, quantity, {from: customer});
 		}).then(function(){
 			return burger.sendPrice(orderno, price, {from: seller});
 		}).then(function(){
-			return burger.sendSafepay(orderno, {from: customer, value: price});
+			return burger.sendSafePayment(orderno, {from: customer, value: price});
 		}).then(function(){
-			return burger.sendInvoice(orderno, 0, {from: seller});
+			return burger.sendInvoice(orderno, orderDate, {from: seller});
 		}).then(function(){
-			return burger.delivery(invoiceno, 0, {from: customer});
+			return burger.markOrderDelivered(invoiceno, deliveryDate, {from: customer});
 		}).then(function(){
 		return new Promise(function(resolve, reject){
 			return web3.eth.getBalance(burger.address, function(err, hash){

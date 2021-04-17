@@ -4,7 +4,7 @@ This project focuses on a case study which is developing an Ethereum smart contr
 
 Basicaly the smart contract, which is developed in this project, provides:
 
-- **The functions for customers:** Order burger menu, safe payment, get invoice and mark order as delivered functions.
+- **The functions for customers:** Order burger, safe payment, get invoice and mark order as delivered functions.
 - **The functions for burger store:** Get orders, send price, send invoice and safe payout functions.
 
 This repository presents practices about:

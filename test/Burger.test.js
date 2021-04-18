@@ -24,7 +24,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		orderno        = 1;
 		invoiceno      = 1;		
 		price          = 100000;
-		burgerMenu          = "BigMac";
+		burgerMenu          = "BigBurger";
 		quantity       = 200;
 		orderDate      = (new Date()).getTime(); // for date time practices: https://github.com/pipermerriam/ethereum-datetime
 		deliveryDate      = (new Date()).getTime() + 30000;
@@ -46,7 +46,7 @@ contract('BurgerMenuOrder', function(accounts) {
 
 	});
 
-	it("should the second account was the customer", function(){
+	it("The customer account should be the second account.", function(){
 
 		var burger;
 
@@ -55,14 +55,14 @@ contract('BurgerMenuOrder', function(accounts) {
 
 			return burger.customerAddress();
 		}).then(function(customer){
-			assert.equal(accounts[1], customer, "The second account was not the customer");
+			assert.equal(accounts[1], customer, "The second account is not the customer.");
 		});
 
 	});
 
 
 
-	it("should first order was ID 1", function(){
+	it("The first order ID should equal to 1.", function(){
 
 		var burger;
 
@@ -86,12 +86,12 @@ contract('BurgerMenuOrder', function(accounts) {
 		}).then(function(){
 			return burger.checkOrder(orderno);
 		}).then(function(order){
-			assert.notEqual(order, null, "The order ID 1 did not exists"); 
+			assert.notEqual(order, null, "The first order ID does not equal to 1."); 
 		});
 
 	});
 
-	it("should the order's price was set", function(){
+	it("The order's price should be set.", function(){
 
 		var burger;
 
@@ -109,7 +109,7 @@ contract('BurgerMenuOrder', function(accounts) {
 
 	});
 
-	it("should the safe pay was correct", function(){
+	it("The safe payment should be correct.", function(){
 
 		var burger;
 
@@ -128,7 +128,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		});
 	});
 
-	it("should the contract's balance was correct after the safepay", function() {
+	it("The contract's balance should be correct after the safe payment.", function() {
 
 		var burger;
 
@@ -154,7 +154,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		});
 	});
 
-	it("should the first invoice was ID 1", function(){
+	it("The first invoice ID should equal to 1.", function(){
 
 		var burger;
 
@@ -173,7 +173,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		});
 	});
 
-	it("should the invoice 1 it is for order 1", function(){
+	it("The first invoice should be for the first order.", function(){
 
 		var burger;
 
@@ -192,7 +192,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		});
 	});
 
-	it("should the contract's balance was correct after the markOrderDelivered", function(){
+	it("The contract's balance should be correct after the order delivered.", function(){
 
 		var burger;
 

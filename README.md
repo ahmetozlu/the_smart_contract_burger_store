@@ -13,6 +13,33 @@ This repository presents practices about:
 - Develop Ethereum smart contract.
 - Deploy the contract and test it.
 
+## Quick Demo
+
+
+First, clone the repository and build the project using truffle by this command:
+
+    truffle build
+    
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22610163/115788152-ecb67080-a3cb-11eb-938f-5ba3c7c6d7f3.png">
+</p>
+
+After building the project and starting ganache which provides ethereum blockchain network on your local, our smart contract can be deployed using truffle by this command:
+
+    truffle migrate --reset
+    
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22610163/115788246-0b1c6c00-a3cc-11eb-8e16-ea92f32ff8ef.jpg">
+</p>
+
+We can use [developed unit test class](https://github.com/ahmetozlu/smart_contract_helloworld/blob/main/test/Main.test.js) to perform unit testing:
+
+    truffle test
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22610163/115788372-31420c00-a3cc-11eb-84a5-5287b0f89c55.png">
+</p>
+
 ## Theory
 
 Basically there are 3 components in this project which are:
@@ -45,5 +72,3 @@ Ahmet Özlü
 
 ## License
 This system is available under the MIT license. See the LICENSE file for more info.
-
-

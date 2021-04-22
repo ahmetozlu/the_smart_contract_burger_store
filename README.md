@@ -13,6 +13,22 @@ This repository presents practices about:
 - Develop Ethereum smart contract.
 - Deploy the contract and test it.
 
+## Theory
+
+Basically there are 3 components in this project which are:
+
+Component | Explanation
+--- | --- |
+Burger Store | *Deploys the contract and owns it.*
+Customers     | *Can order burgers to buy them.*
+Smart Contract | *Provides safe and robust contract that are immutable.*
+
+And here is given below a business flow chart which explains a sample flow for the usage of this smart contract.
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22610163/114483116-7cac2b80-9c10-11eb-932f-11a8c0633abc.png" width=720>
+</p>
+
 ## Quick Demo
 
 
@@ -39,23 +55,6 @@ We can use [developed unit test class](https://github.com/ahmetozlu/smart_contra
 <p align="center">
   <img src="https://user-images.githubusercontent.com/22610163/115788372-31420c00-a3cc-11eb-84a5-5287b0f89c55.png">
 </p>
-
-## Theory
-
-Basically there are 3 components in this project which are:
-
-Component | Explanation
---- | --- |
-Burger Store | *Deploys the contract and owns it.*
-Customers     | *Can order burgers to buy them.*
-Smart Contract | *Provides safe and robust contract that are immutable.*
-
-And here is given below a business flow chart which explains a sample flow for the usage of this smart contract.
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/22610163/114483116-7cac2b80-9c10-11eb-932f-11a8c0633abc.png" width=720>
-</p>
-
 
 ## Citation
 If you use this code for your publications, please cite it as:

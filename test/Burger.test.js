@@ -2,13 +2,8 @@ var BurgerMenuOrder = artifacts.require('BurgerMenuOrder');
 
 contract('BurgerMenuOrder', function(accounts) {
 
-	const ORDER_PRICE            = 3;
-	const ORDER_SAFEPAY          = 4;	
-
-	const INVOICE_ORDERNO = 1;		
-
 	var seller         = null;
-	var customer          = null;	
+	var customer       = null;	
 	var orderno        = null;
 	var invoiceno      = null;
 	
@@ -16,20 +11,18 @@ contract('BurgerMenuOrder', function(accounts) {
 	var burgerMenu          = null;
 	var quantity       = null;
 	var orderDate      = null;
-	var deliveryDate      = null;
+	var deliveryDate   = null;
 
 	before(function() {
 		seller         = accounts[0];
 		customer          = accounts[1];		
 		orderno        = 1;
 		invoiceno      = 1;		
-		price          = 100000;
-		burgerMenu          = "BigBurger";
-		quantity       = 200;
+		price          = 50;
+		burgerMenu     = "BigBurger";
+		quantity       = 2;
 		orderDate      = (new Date()).getTime(); // for date time practices: https://github.com/pipermerriam/ethereum-datetime
 		deliveryDate      = (new Date()).getTime() + 30000;
-		console.log(new Date().toString());
-		console.log((new Date()).getTime().toString());
 	});
 
 	it("The burger store account should own the contract.", function(){
@@ -80,7 +73,7 @@ contract('BurgerMenuOrder', function(accounts) {
 				});
 			});
 		}).then(function(tx){
-			console.log(tx.gasPrice.toString());
+			//console.log(tx.gasPrice.toString());
 		}).then(function(){
 			//query getTransactionReceipt
 		}).then(function(){
@@ -104,7 +97,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		}).then(function(){
 			return burger.checkOrder(orderno);
 		}).then(function(order){
-			assert.equal(order[ORDER_PRICE].toString(), price);
+			assert.equal(order[3].toString(), price);
 		});
 
 	});
@@ -124,7 +117,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		}).then(function(){
 			return burger.checkOrder(orderno);
 		}).then(function(order){
-			assert.equal(order[ORDER_SAFEPAY].toString(), price);
+			assert.equal(order[4].toString(), price);
 		});
 	});
 
@@ -188,7 +181,7 @@ contract('BurgerMenuOrder', function(accounts) {
 		}).then(function(){
 			return burger.getInvoice(invoiceno);
 		}).then(function(invoice){
-			assert.equal(invoice[INVOICE_ORDERNO].toString(), orderno);
+			assert.equal(invoice[1].toString(), orderno);
 		});
 	});
 

@@ -29,6 +29,28 @@ And here is given below a business flow chart which explains a sample flow for t
   <img src="https://user-images.githubusercontent.com/22610163/114483116-7cac2b80-9c10-11eb-932f-11a8c0633abc.png" width=720>
 </p>
 
+### Functionalities
+
+There are a bunch of functions are implemented in this case study. This functions can be adopted for any other business cases. Here are the functions and their details.
+
+- **sendOrder:** Function to send order. Only customers can use this function.
+- **checkOrder:** Function to check orders.
+- **sendPrice:** Function to send price. Only the owner (Burger Store which deploys this Smart Contract) can use this function.
+- **sendSafePayment:** Function to send safe payment. Only customers can use this function.
+- **sendInvoice:** Function to send invoice. Only the owner can use this function.
+- **getInvoice:** Function to get invoice.
+- **markOrderDelivered:** Function to mark the order as delivered. Only customers can use this function.
+
+And, here are the events are triggered for the activities:
+
+- **OrderSent**: Event triggers when order sent.
+- **PriceSent**: Event triggers when price sent.
+- **SafePaymentSent**: Event triggers when safe payment sent.
+- **InvoiceSent**: Event triggers when invoice sent.
+- **OrderDelivered**: Event triggers when order delivered.
+
+The functions and events can be modified and used for any other business logic requirements.
+
 ## Quick Demo
 
 

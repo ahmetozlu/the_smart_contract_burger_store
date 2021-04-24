@@ -26,7 +26,7 @@ Smart Contract | *Provides safe and robust contract that are immutable.*
 And here is given below a business flow chart which explains a sample flow for the usage of this smart contract.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/22610163/114483116-7cac2b80-9c10-11eb-932f-11a8c0633abc.png" width=720>
+  <img src="https://user-images.githubusercontent.com/22610163/115942120-5197c680-a4b1-11eb-9ecf-5cebf91fc388.png" width=720>
 </p>
 
 ### Functionalities
@@ -70,7 +70,7 @@ After building the project and starting ganache which provides ethereum blockcha
   <img src="https://user-images.githubusercontent.com/22610163/115788246-0b1c6c00-a3cc-11eb-8e16-ea92f32ff8ef.jpg">
 </p>
 
-We can use [developed unit test class](https://github.com/ahmetozlu/smart_contract_helloworld/blob/main/test/Main.test.js) to perform unit testing:
+We can use [developed unit test class](https://github.com/ahmetozlu/the_smart_contract_burger_store/blob/main/test/Burger.test.js) to perform unit testing:
 
     truffle test
 

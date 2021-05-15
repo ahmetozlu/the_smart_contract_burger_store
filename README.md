@@ -26,7 +26,7 @@ Smart Contract | *Provides safe and robust contract that are immutable.*
 And here is given below a business flow chart which explains a sample flow for the usage of this smart contract.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/22610163/115942120-5197c680-a4b1-11eb-9ecf-5cebf91fc388.png" width=720>
+  <img src="https://user-images.githubusercontent.com/22610163/118378443-9a3c2e80-b5dc-11eb-8848-a3fd094f9f34.png" width=720>
 </p>
 
 ### Functionalities

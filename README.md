@@ -1,6 +1,6 @@
 # The Smart Contract Burger Store
 
-This project focuses on a case study which is developing an Ethereum smart contract to manage a burger store. This case study can be adopted for various cases to use smart contract for real-life businesses. For more info, you can check [related medium post](https://ahmetozlu93.medium.com/building-smart-contract-for-businesses-cd620b00801b).
+This project focuses on a real life case study which is developing an Ethereum smart contract to manage a burger store. This case study can be adopted for various cases to use smart contract for real-life businesses. For more info, you can check [related medium post](https://ahmetozlu93.medium.com/building-smart-contract-for-businesses-cd620b00801b).
 
 Basicaly the smart contract, which is developed in this project, provides:
 
